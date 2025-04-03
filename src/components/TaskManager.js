@@ -21,7 +21,7 @@ function TaskManager() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/tasks")
+      .get("https://task-manager-backend-5awc.onrender.com/api/tasks")
       .then((response) => {
         setTasks(response.data.tasks);
         toast.success("Tasks loaded successfully!");
@@ -44,7 +44,7 @@ function TaskManager() {
     }
 
     axios
-      .post("http://localhost:3001/api/tasks", newTask)
+      .post("https://task-manager-backend-5awc.onrender.com/api/tasks", newTask)
       .then((response) => {
         setTasks([...tasks, response.data.task]);
         setNewTask({ title: "", description: "", dueDate: "" });
@@ -65,7 +65,7 @@ function TaskManager() {
 
   const handleToggleCompletion = (title) => {
     axios
-      .put(`http://localhost:3001/api/tasks/completion/${encodeURIComponent(title)}`)
+      .put(`https://task-manager-backend-5awc.onrender.com/api/tasks/completion/${encodeURIComponent(title)}`)
       .then((response) => {
         const updatedTasks = tasks.map((task) =>
           task.title === title ? response.data.task : task
@@ -81,7 +81,7 @@ function TaskManager() {
 
   const handleDeleteTask = (title) => {
     axios
-      .delete(`http://localhost:3001/api/tasks/${encodeURIComponent(title)}`)
+      .delete(`https://task-manager-backend-5awc.onrender.com/api/tasks/${encodeURIComponent(title)}`)
       .then(() => {
         const updatedTasks = tasks.filter((task) => task.title !== title);
         setTasks(updatedTasks);
@@ -115,7 +115,7 @@ function TaskManager() {
 
     const identifier = task._id || task.title;
     axios
-      .put(`http://localhost:3001/api/tasks/${identifier}`, updateTask)
+      .put(`https://task-manager-backend-5awc.onrender.com/api/tasks/${identifier}`, updateTask)
       .then((response) => {
         const updatedTasks = tasks.map((t) =>
           t._id === task._id ? response.data.task : t
@@ -149,7 +149,7 @@ function TaskManager() {
         handleUpdateTask={handleUpdateTask}
         handleUpdateInputChange={handleUpdateInputChange}
       />
-      {/* ✅ Ensures toasts are displayed */}
+      
       <ToastContainer />
     </div>
   );
