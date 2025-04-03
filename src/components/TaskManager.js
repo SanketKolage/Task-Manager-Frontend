@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TaskInput from "./TaskInput";
 import TaskList from "./TaskList";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
@@ -19,9 +21,15 @@ function TaskManager() {
 
   useEffect(() => {
     axios
-      .get("https://task-manager-backend-5awc.onrender.com/api/tasks")
-      .then((response) => setTasks(response.data.tasks))
-      .catch((error) => console.error("Error fetching tasks:", error));
+      .get("http://localhost:3001/api/tasks")
+      .then((response) => {
+        setTasks(response.data.tasks);
+        toast.success("Tasks loaded successfully!");
+      })
+      .catch((error) => {
+        console.error("Error fetching tasks:", error);
+        toast.error("Failed to load tasks!");
+      });
   }, []);
 
   const handleInputChange = (e) => {
@@ -31,50 +39,65 @@ function TaskManager() {
 
   const handleAddTask = () => {
     if (!newTask.title || !newTask.description) {
-      alert("Title and Description are required!");
+      toast.warning("Title and Description are required!");
       return;
     }
 
     axios
-      .post("https://task-manager-backend-5awc.onrender.com/api/tasks", newTask)
+      .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
         setTasks([...tasks, response.data.task]);
         setNewTask({ title: "", description: "", dueDate: "" });
-        alert("Task added successfully!");
+        toast.success("Task added successfully!", {
+          position: "top-right",
+          autoClose: 3000, // Closes after 3 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       })
-      .catch((error) => console.error("Error adding task:", error));
+      .catch((error) => {
+        console.error("Error adding task:", error);
+        toast.error("Failed to add task!");
+      });
   };
 
   const handleToggleCompletion = (title) => {
     axios
-      .put(`https://task-manager-backend-5awc.onrender.com/api/tasks/completion/${encodeURIComponent(title)}`)
+      .put(`http://localhost:3001/api/tasks/completion/${encodeURIComponent(title)}`)
       .then((response) => {
         const updatedTasks = tasks.map((task) =>
           task.title === title ? response.data.task : task
         );
         setTasks(updatedTasks);
+        toast.info(`Task "${title}" status updated!`);
       })
-      .catch((error) => console.error("Error updating task:"));
+      .catch((error) => {
+        console.error("Error updating task:", error);
+        toast.error("Failed to update task!");
+      });
   };
 
   const handleDeleteTask = (title) => {
     axios
-      .delete(`https://task-manager-backend-5awc.onrender.com/api/tasks/${encodeURIComponent(title)}`)
+      .delete(`http://localhost:3001/api/tasks/${encodeURIComponent(title)}`)
       .then(() => {
         const updatedTasks = tasks.filter((task) => task.title !== title);
         setTasks(updatedTasks);
-        alert(`Task with title "${title}" deleted successfully`);
+        toast.info(`Task "${title}" deleted successfully!`);
       })
-      .catch((error) => console.error("Error deleting task:", error));
+      .catch((error) => {
+        console.error("Error deleting task:", error);
+        toast.error("Failed to delete task!");
+      });
   };
 
   const handleEditTask = (task) => {
     setUpdateTask({
       title: task.title,
       description: task.description || "",
-      dueDate: task.dueDate
-        ? new Date(task.dueDate).toISOString().split("T")[0]
-        : "",
+      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
     });
     setEditMode(task._id || task.title);
   };
@@ -86,13 +109,13 @@ function TaskManager() {
 
   const handleUpdateTask = (task) => {
     if (!updateTask.title || !updateTask.description) {
-      alert("Title and Description are required!");
+      toast.warning("Title and Description are required!");
       return;
     }
 
     const identifier = task._id || task.title;
     axios
-      .put(`https://task-manager-backend-5awc.onrender.com/api/tasks/${identifier}`, updateTask)
+      .put(`http://localhost:3001/api/tasks/${identifier}`, updateTask)
       .then((response) => {
         const updatedTasks = tasks.map((t) =>
           t._id === task._id ? response.data.task : t
@@ -100,8 +123,12 @@ function TaskManager() {
         setTasks(updatedTasks);
         setUpdateTask({ title: "", description: "", dueDate: "" });
         setEditMode(null);
+        toast.success(`Task "${task.title}" updated successfully!`);
       })
-      .catch((error) => console.error("Error updating task:", error));
+      .catch((error) => {
+        console.error("Error updating task:", error);
+        toast.error("Failed to update task!");
+      });
   };
 
   return (
@@ -122,6 +149,8 @@ function TaskManager() {
         handleUpdateTask={handleUpdateTask}
         handleUpdateInputChange={handleUpdateInputChange}
       />
+      {/* ✅ Ensures toasts are displayed */}
+      <ToastContainer />
     </div>
   );
 }
