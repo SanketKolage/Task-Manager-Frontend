@@ -21,13 +21,14 @@ body {
 /* App Container */
 .app-container {
   width: 100%;
+  max-width: 1200px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Cards Container - Horizontal Layout */
+/* Cards Container */
 .cards-container {
   display: flex;
   gap: 20px;
@@ -35,68 +36,49 @@ body {
   justify-content: center;
   margin-top: 20px;
   width: 100%;
-  max-width: 1200px;
 }
 
+/* Task Item Container */
 .container {
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2); 
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   min-width: 25rem;
- margin: 5px;
+  max-width: 100%;
+  margin: 5px;
   transition: transform 0.3s ease;
   color: #040000;
 }
 
-
-/* Card with Glassmorphism */
-/* .card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  padding: 20px;
-  width: 30rem;
-  height: auto;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: black;
-  margin: 1rem 0;
-} */
-
-.card:hover {
+.container:hover {
   transform: scale(1.03);
 }
 
-/* Text Content in Card */
-.card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 4px;
-  font-weight: 500;
-  color: #040000;
-}
-
-.card p {
-  font-size: 1rem;
-  color: #040000;
-  margin-bottom: 4px;
-}
-
-.card, 
-.actions {
+/* Task List */
+ul {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  list-style-type: none;
 }
 
-/* Modern Buttons */
+/* Task Title, Description, Status */
+.tasktitle, .taskdesc, .remDays, .status {
+  margin: 1rem 0;
+}
+
+.tasktitle h3, .taskdesc h3, .remDays h3, .status h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Buttons */
 button {
   padding: 10px 15px;
   border: none;
@@ -107,7 +89,6 @@ button {
   transition: all 0.3s ease-in-out;
   background: linear-gradient(135deg, #6a11cb, #2575fc);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  
 }
 
 button:hover {
@@ -120,10 +101,13 @@ button:active {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Specific Button Styles */
+button:focus {
+  outline: 2px solid #fff;
+}
+
+/* Button Variants */
 .editbtn {
   background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  
 }
 
 .addbtn {
@@ -139,111 +123,38 @@ button:active {
   background: linear-gradient(135deg, #f4d03f, #16a085);
 }
 
-/* Header */
-h1 {
-  background-color: #2e84d4;
-  color: rgb(8, 0, 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 20px;
-  font-size: 2rem;
-  text-align: center;
-  border-radius: 10px;
-}
-ul {
-  display: flex; /* Set cards in a horizontal row */
-  /* flex-wrap: wrap; Allow wrapping for smaller screens */
-  justify-content: space-evenly; /* Distribute cards evenly */
-  padding: 0;
-  list-style-type: none; /* Remove default list styling */
-  margin: 0;
-}
-.taskdesc,
-.remDay,
-.status{
-  margin: 1rem 0;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .cards-container {
-      flex-direction: column;
-      align-items: center;
-  }
-
-  .card {
-      width: 100%;
-      max-width: 550px;
-    
-  }
-
-  h1 {
-      font-size: 1.5rem;
-      padding: 10px;
-  }
-}
-/* Input Styling */
+/* Input Fields */
 .inputtitle, .inputdesc, .inputdate {
   width: 100%;
   max-width: 400px;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px ;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  outline: none;
-  transition: all 0.3s ease;
- 
-  background: rgba(255, 255, 255, 0.412);
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-  
-  color: #0c0101; /* Text color for contrast */
-  font-weight: 500; /* Slightly bolder text */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #000;
 }
 
-.inputtitle:hover,
-.inputdesc:hover,
-.inputdate:hover {
+.inputtitle:hover, .inputdesc:hover, .inputdate:hover {
   border: 1px solid rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.427);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-.input-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.addbtn {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #8d12de;
-  background-color: #6200ea;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.addbtn:hover {
-  background-color: #3700b3;
-}
-
-.addbtn:focus {
-  outline: 2px solid #bb86fc;
-  
-}
-
-/* Media Query for Responsiveness */
+/* Responsive Design */
 @media (max-width: 768px) {
+  .container {
+    min-width: 100%;
+  }
+
+  ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .inputtitle, .inputdesc, .inputdate {
     max-width: 100%;
   }
